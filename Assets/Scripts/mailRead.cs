@@ -11,10 +11,11 @@ public class mailRead : MonoBehaviour
         Player.transform.GetChild(0).GetComponent<FirstPersonLook>().enabled = false;
 
         // Close the UI when pressing Enter
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             CloseUI();
         }
+
     }
 
     private void OnEnable()

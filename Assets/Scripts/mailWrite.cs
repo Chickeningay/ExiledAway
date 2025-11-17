@@ -8,7 +8,7 @@ public class mailWrite : MonoBehaviour
 {
     public TMP_InputField inputField;
     public GameObject Player;
-
+    public GameObject AI;
     private void Update()
     {
         Player.GetComponent<FirstPersonMovement>().enabled = false;
@@ -16,6 +16,8 @@ public class mailWrite : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
+            AI.GetComponent<AICommunicate>().message = inputField.text;
+            AI.GetComponent<AICommunicate>().SendToPython();
             CloseInput();
         }
     }

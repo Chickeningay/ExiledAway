@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Rendering;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,13 +8,14 @@ public class globalTrigger : MonoBehaviour
 {
     public GameObject mailWrite;
     public GameObject mailArrive;
-
+    public GameObject woodCounter;
+    public GameObject bed;
     bool mailWriteTrigger;
-
+    bool bedTrigger;
     bool mailArriveTrigger;
 
     bool HouseDoorTrigger;
-
+    bool woodTrigger;
     void Start()
     {
         
@@ -32,7 +34,15 @@ public class globalTrigger : MonoBehaviour
             {
                 mailArrive.SetActive(true);
             }
-            else if (HouseDoorTrigger) 
+            else if (woodTrigger) 
+            {
+                woodCounter.GetComponent<countWood>().woodCount++;
+            }
+            else if (bedTrigger)
+            {
+                bed.GetComponent<sleepScript>().enabled = true ;
+            }
+            else if (HouseDoorTrigger)
             {
                 if (SceneManager.GetActiveScene().buildIndex == 0)
                 {
@@ -43,6 +53,7 @@ public class globalTrigger : MonoBehaviour
                     SceneManager.LoadScene(0);
                 }
             }
+
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -59,6 +70,14 @@ public class globalTrigger : MonoBehaviour
             {
                 HouseDoorTrigger = true;
             }
+            if (other.gameObject.tag == "wood")
+            {
+                woodTrigger = true;
+            }
+            if (other.gameObject.tag == "bed")
+            {
+                bedTrigger = true;
+            }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -74,5 +93,13 @@ public class globalTrigger : MonoBehaviour
             {
                 HouseDoorTrigger = false;
             }
+            if (other.gameObject.tag == "wood")
+            {
+                woodTrigger = false;
+            }
+        if (other.gameObject.tag == "bed")
+        {
+            bedTrigger = false;
+        }
     }
 }

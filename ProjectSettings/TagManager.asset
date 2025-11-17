@@ -7,6 +7,8 @@ TagManager:
   - mailWrite
   - mailArrive
   - houseDoor
+  - wood
+  - bed
   layers:
   - Default
   - TransparentFX
