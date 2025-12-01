@@ -20,10 +20,7 @@ public class AICommunicate : MonoBehaviour
     {
         StartCoroutine(SendMessageToPython());
     }
-    private void Start()
-    {
-        DontDestroyOnLoad(this.gameObject);
-    }
+
     private IEnumerator SendMessageToPython()
     {
         if (string.IsNullOrEmpty(message))

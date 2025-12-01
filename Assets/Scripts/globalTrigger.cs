@@ -9,11 +9,13 @@ public class globalTrigger : MonoBehaviour
     public GameObject mailWrite;
     public GameObject mailArrive;
     public GameObject woodCounter;
+    public GameObject wood;
+    public GameObject foodCounter;
     public GameObject bed;
     bool mailWriteTrigger;
     bool bedTrigger;
     bool mailArriveTrigger;
-
+    bool foodTrigger;
     bool HouseDoorTrigger;
     bool woodTrigger;
     void Start()
@@ -37,10 +39,14 @@ public class globalTrigger : MonoBehaviour
             else if (woodTrigger) 
             {
                 woodCounter.GetComponent<countWood>().woodCount++;
+                wood.GetComponent<Animator>().Play("woodChop");
             }
             else if (bedTrigger)
             {
                 bed.GetComponent<sleepScript>().enabled = true ;
+            }
+            else if (foodTrigger)
+            {
             }
             else if (HouseDoorTrigger)
             {
@@ -78,6 +84,11 @@ public class globalTrigger : MonoBehaviour
             {
                 bedTrigger = true;
             }
+            if (other.gameObject.tag == "food")
+            {
+            foodCounter.GetComponent<countFood>().foodCount++;
+            Destroy(other.transform.parent.gameObject);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -97,9 +108,13 @@ public class globalTrigger : MonoBehaviour
             {
                 woodTrigger = false;
             }
-        if (other.gameObject.tag == "bed")
-        {
-            bedTrigger = false;
-        }
+            if (other.gameObject.tag == "bed")
+            {
+                bedTrigger = false;
+            }
+            if (other.gameObject.tag == "food")
+            {
+                foodTrigger = false;
+            }
     }
 }

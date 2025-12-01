@@ -62,15 +62,15 @@ public class dialogue_script : MonoBehaviour
             }
             if (chosenChild == 0)
             {
-                transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "...";
+                transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "The stranger won't answer";
             }
             else if (chosenChild == 1)
             {
-                transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "...";
+                transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "The stranger seems disinterested in this question";
             }
             else if (chosenChild == 2)
             {
-                transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "...";
+                transform.GetChild(3).gameObject.GetComponent<TMP_Text>().text = "He looks away";
             }
         }
     }

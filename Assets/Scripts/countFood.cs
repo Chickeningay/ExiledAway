@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class countWood : MonoBehaviour
+public class countFood : MonoBehaviour
 {
-    public int woodCount;
+    public int foodCount;
     public GameObject dataHolder;
     // Start is called before the first frame update
     void Start()
@@ -16,8 +16,8 @@ public class countWood : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        dataHolder.GetComponent<dataHolder>().woodAmount = woodCount;
+        dataHolder.GetComponent<dataHolder>().foodAmount = foodCount;
 
-        gameObject.GetComponent<TMP_Text>().text = woodCount.ToString();
+        gameObject.GetComponent<TMP_Text>().text = foodCount.ToString();
     }
 }
