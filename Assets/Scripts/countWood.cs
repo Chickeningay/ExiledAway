@@ -11,12 +11,14 @@ public class countWood : MonoBehaviour
     void Start()
     {
         dataHolder = GameObject.Find("AI");
+        woodCount = PlayerPrefs.GetInt("WoodAmount");
     }
 
     // Update is called once per frame
     void Update()
     {
-        dataHolder.GetComponent<dataHolder>().woodAmount = woodCount;
+        PlayerPrefs.SetInt("WoodAmount", woodCount);
+
 
         gameObject.GetComponent<TMP_Text>().text = woodCount.ToString();
     }

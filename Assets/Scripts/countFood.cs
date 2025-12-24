@@ -11,12 +11,13 @@ public class countFood : MonoBehaviour
     void Start()
     {
         dataHolder = GameObject.Find("AI");
+        foodCount = PlayerPrefs.GetInt("FoodAmount");
     }
 
     // Update is called once per frame
     void Update()
     {
-        dataHolder.GetComponent<dataHolder>().foodAmount = foodCount;
+        PlayerPrefs.SetInt("FoodAmount", foodCount);
 
         gameObject.GetComponent<TMP_Text>().text = foodCount.ToString();
     }

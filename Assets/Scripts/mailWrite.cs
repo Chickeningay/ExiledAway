@@ -1,14 +1,20 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections;
-
 
 public class mailWrite : MonoBehaviour
 {
     public TMP_InputField inputField;
     public GameObject Player;
     public GameObject AI;
+    public Letters lettersDB;
+
+    void Start()
+    {
+        lettersDB = FindObjectOfType<Letters>();
+    }
+
     private void Update()
     {
         Player.GetComponent<FirstPersonMovement>().enabled = false;
@@ -16,8 +22,29 @@ public class mailWrite : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return))
         {
-            AI.GetComponent<AICommunicate>().message = inputField.text;
-            AI.GetComponent<AICommunicate>().SendToPython();
+            int day = PlayerPrefs.GetInt("day");
+
+            int replyDay = day - 1;
+
+            bool replyingToFather = replyDay % 2 == 0;
+
+            string letterId = replyingToFather
+                ? PlayerPrefs.GetString("fatherPath")
+                : PlayerPrefs.GetString("gfPath");
+
+            var letter = lettersDB.Get(letterId);
+            if (letter == null)
+            {
+                Debug.LogError("No letter found for ID: " + letterId);
+                return;
+            }
+
+            var ai = AI.GetComponent<AICommunicate>();
+
+            ai.instruction = letter.prompt;      
+            ai.message = inputField.text;        
+
+            ai.SendToPython();
             CloseInput();
         }
     }
@@ -29,7 +56,7 @@ public class mailWrite : MonoBehaviour
 
     private IEnumerator FocusInputNextFrame()
     {
-        yield return null; 
+        yield return null;
         EventSystem.current.SetSelectedGameObject(inputField.gameObject);
         inputField.Select();
         inputField.ActivateInputField();
@@ -45,10 +72,11 @@ public class mailWrite : MonoBehaviour
     {
         inputField.DeactivateInputField();
         EventSystem.current.SetSelectedGameObject(null);
+
         Player.GetComponent<FirstPersonMovement>().enabled = true;
         Player.transform.GetChild(0).GetComponent<FirstPersonLook>().enabled = true;
+
         inputField.text = "";
         gameObject.SetActive(false);
-
     }
 }

@@ -1,30 +1,73 @@
-using System.Collections;
+﻿
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+
 public class visitorScript : MonoBehaviour
 {
     public AnimationClip giveLetterAnim;
-    public bool giveLetter = false;
-    public GameObject letter;
+    public GameObject letterUI;
+    public bool giveLetter;
     public GameObject AI;
-    
+    public Letters lettersDB;
+
+    bool resolved;
+
     void Start()
     {
         AI = GameObject.Find("AI");
+        lettersDB = FindObjectOfType<Letters>();
+
+        if (!PlayerPrefs.HasKey("gfPath"))
+            PlayerPrefs.SetString("gfPath", "g1");
+
+        if (!PlayerPrefs.HasKey("fatherPath"))
+            PlayerPrefs.SetString("fatherPath", "f1");
     }
+
     void Update()
     {
-        if (AI.GetComponent<AICommunicate>().sentimentResult) 
+        if (giveLetter)
         {
-            letter.transform.GetChild(0).gameObject.GetComponent<TMP_Text>().text = "I will try my best my son..";
+            GetComponent<Animator>().Play(giveLetterAnim.name);
+            letterUI.SetActive(true);
         }
-        if (giveLetter){
-            gameObject.GetComponent<Animator>().Play(giveLetterAnim.name);
-        letter.SetActive(true);
-            giveLetter = false;
+        if (resolved) return;
+
+        bool isFatherDay = PlayerPrefs.GetInt("day") % 2 == 0;
+        string pathKey = isFatherDay ? "fatherPath" : "gfPath";
+
+        string currentId = PlayerPrefs.GetString(pathKey);
+        var currentLetter = lettersDB.Get(currentId);
+        if (currentLetter == null) return;
+
+        bool result = AI.GetComponent<AICommunicate>().result;
+
+        Letters.Letter nextLetter = currentLetter;
+
+        if (!currentLetter.isEnding)
+        {
+            string nextId = result
+                ? currentLetter.nextOnTrue
+                : currentLetter.nextOnFalse;
+
+            if (!string.IsNullOrEmpty(nextId))
+            {
+                PlayerPrefs.SetString(pathKey, nextId);
+                nextLetter = lettersDB.Get(nextId);
+            }
         }
 
+        if (nextLetter != null)
+        {
+            letterUI.transform.GetChild(0)
+                .GetComponent<TMP_Text>().text = nextLetter.text;
+        }
+        
+
+        resolved = true;
     }
 }
+
+

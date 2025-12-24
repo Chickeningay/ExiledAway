@@ -1,21 +1,24 @@
 ﻿using System.Collections;
 using System.Text;
-using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class AICommunicate : MonoBehaviour
 {
+    [Header("LLM Instruction / Criteria")]
+    [TextArea(3, 6)]
+    public string instruction;
 
-    [Header("Message to send")]
+    [Header("Message to analyze")]
+    [TextArea(3, 6)]
     public string message;
 
-    [Header("Sentiment result (true = positive, false = negative)")]
-    public bool sentimentResult;
+    [Header("LLM Boolean Result")]
+    public bool result;
 
     private const string pythonUrl = "http://127.0.0.1:5005/analyze";
 
-    // ✅ Call this function manually (via button or script)
+    // Call this from a button or another script
     public void SendToPython()
     {
         StartCoroutine(SendMessageToPython());
@@ -23,14 +26,13 @@ public class AICommunicate : MonoBehaviour
 
     private IEnumerator SendMessageToPython()
     {
-        if (string.IsNullOrEmpty(message))
+        if (string.IsNullOrEmpty(instruction) || string.IsNullOrEmpty(message))
         {
-            Debug.LogWarning("Message is empty!");
+            Debug.LogWarning("Instruction or message is empty!");
             yield break;
         }
 
-        // Ensure valid JSON formatting
-        string jsonData = JsonUtility.ToJson(new MessageWrapper(message));
+        string jsonData = JsonUtility.ToJson(new PromptWrapper(instruction, message));
         byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonData);
 
         using (UnityWebRequest request = new UnityWebRequest(pythonUrl, "POST"))
@@ -44,7 +46,9 @@ public class AICommunicate : MonoBehaviour
             if (request.result == UnityWebRequest.Result.Success)
             {
                 Debug.Log("Response: " + request.downloadHandler.text);
-                sentimentResult = request.downloadHandler.text.Contains("\"positive\":true");
+
+                // Simple & safe boolean extraction
+                result = request.downloadHandler.text.Contains("\"result\":true");
             }
             else
             {
@@ -55,9 +59,15 @@ public class AICommunicate : MonoBehaviour
     }
 
     [System.Serializable]
-    private class MessageWrapper
+    private class PromptWrapper
     {
+        public string instruction;
         public string message;
-        public MessageWrapper(string msg) { message = msg; }
+
+        public PromptWrapper(string instruction, string message)
+        {
+            this.instruction = instruction;
+            this.message = message;
+        }
     }
 }

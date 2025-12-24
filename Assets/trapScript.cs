@@ -1,18 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using static Unity.VisualScripting.Metadata;
 
-public class foodscript : MonoBehaviour
+public class trapScript : MonoBehaviour
 {
-    public int amount;
-    public GameObject dataHolder;
-    public List<GameObject> children = new List<GameObject>();
+    public List<GameObject> children;
+    // Start is called before the first frame update
     void Start()
     {
-        dataHolder = GameObject.Find("AI");
         foreach (Transform child in transform.GetComponentsInChildren<Transform>())
         {
-            if (child.gameObject != gameObject)
+            if (child.gameObject != gameObject&& gameObject.name=="trap")
             {
                 children.Add(child.gameObject);
 
@@ -25,16 +25,10 @@ public class foodscript : MonoBehaviour
     {
         foreach (var child in children) { child.SetActive(false); }
 
-        amount = dataHolder.GetComponent<dataHolder>().foodAmount;
+        var amount = PlayerPrefs.GetInt("TrapAmount");
         int kids = 0;
         switch (amount)
         {
-            case > 5:
-                kids = 5;
-                break;
-            case > 4:
-                kids = 4;
-                break;
             case > 3:
                 kids = 3;
                 break;

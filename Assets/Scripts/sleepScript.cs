@@ -47,5 +47,7 @@ public class sleepScript : MonoBehaviour
 
         c.a = endAlpha;
         rawImage.color = c;
+        var temp = PlayerPrefs.GetInt("day");
+        PlayerPrefs.SetInt("day", temp+1);
     }
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class dataHolder : MonoBehaviour
 {
-    public int woodAmount;
-    public int foodAmount;
+
 
     private void Start()
     {
