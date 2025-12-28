@@ -18,6 +18,9 @@ public class globalTrigger : MonoBehaviour
     bool foodTrigger;
     bool HouseDoorTrigger;
     bool woodTrigger;
+    private bool eatTrigger;
+    private bool fireTrigger;
+
     void Start()
     {
         
@@ -30,20 +33,32 @@ public class globalTrigger : MonoBehaviour
         { 
             if (mailWriteTrigger)
             {
+                bed.GetComponent<interactBlocker>().sleep = true;
+
                 mailWrite.SetActive(true);
             }
-            else if (mailArriveTrigger) 
+            else if (eatTrigger)
+            {
+                bed.GetComponent<interactBlocker>().eat = true;
+
+            }
+            else if (fireTrigger)
+            {
+                bed.GetComponent<interactBlocker>().fireboxbool = true;
+
+            }
+            else if (mailArriveTrigger)
             {
                 mailArrive.SetActive(true);
             }
-            else if (woodTrigger) 
+            else if (woodTrigger)
             {
                 woodCounter.GetComponent<countWood>().woodCount++;
                 wood.GetComponent<Animator>().Play("woodChop");
             }
             else if (bedTrigger)
             {
-                bed.GetComponent<sleepScript>().enabled = true ;
+                bed.GetComponent<sleepScript>().enabled = true;
             }
             else if (foodTrigger)
             {
@@ -89,6 +104,15 @@ public class globalTrigger : MonoBehaviour
             foodCounter.GetComponent<countFood>().foodCount++;
             Destroy(other.transform.parent.gameObject);
         }
+        if (other.gameObject.tag == "fire")
+        {
+            fireTrigger = true;
+        }
+        if (other.gameObject.tag == "eat")
+        {
+            eatTrigger = true;
+
+        }
     }
     private void OnTriggerExit(Collider other)
     {
@@ -116,5 +140,14 @@ public class globalTrigger : MonoBehaviour
             {
                 foodTrigger = false;
             }
+        if (other.gameObject.tag == "fire")
+        {
+            fireTrigger = false;
+        }
+        if (other.gameObject.tag == "eat")
+        {
+            eatTrigger = false;
+
+        }
     }
 }

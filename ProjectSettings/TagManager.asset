@@ -10,6 +10,8 @@ TagManager:
   - wood
   - bed
   - food
+  - eat
+  - fire
   layers:
   - Default
   - TransparentFX
