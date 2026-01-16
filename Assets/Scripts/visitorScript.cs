@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using static Letters;
 
 
 public class visitorScript : MonoBehaviour
@@ -44,7 +45,16 @@ public class visitorScript : MonoBehaviour
         if (currentLetter == null) return;
         
         bool result = AI.GetComponent<AICommunicate>().result;
-
+        if (currentLetter.isEnding && isFatherDay)
+        {
+            currentId = PlayerPrefs.GetString("fatherPath");
+            currentLetter = lettersDB.Get(currentId);
+        }
+        else if (currentLetter.isEnding && !isFatherDay)
+        {
+            currentId = PlayerPrefs.GetString("gfPath");
+            currentLetter = lettersDB.Get(currentId);
+        }
         Letters.Letter nextLetter = currentLetter;
 
         if (!currentLetter.isEnding)

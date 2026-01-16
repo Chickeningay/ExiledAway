@@ -22,7 +22,7 @@ public class globalTrigger : MonoBehaviour
     private bool eatTrigger;
     private bool fireTrigger;
     Letters lettersDB;
-
+    public bool once;
     void Start()
     {
          lettersDB = FindObjectOfType<Letters>();
@@ -33,13 +33,7 @@ public class globalTrigger : MonoBehaviour
         print(currentId + " " + currentId2);
         if (gfLetterbool && fatherLetterbool)
         {
-            if (currentId == "g4" || currentId2 == "f4")
-            {
-                SceneManager.LoadScene(3);
-            }
-            else { 
-                SceneManager.LoadScene(2);
-            }
+                SceneManager.LoadScene(4);
         }
     }
 
@@ -52,8 +46,10 @@ public class globalTrigger : MonoBehaviour
             if (mailWriteTrigger)
             {
                 bed.GetComponent<interactBlocker>().sleep = true;
-
+                if (!once) { 
                 mailWrite.SetActive(true);
+                    once = true;
+                }
             }
             else if (eatTrigger)
             {
@@ -86,13 +82,13 @@ public class globalTrigger : MonoBehaviour
             }
             else if (HouseDoorTrigger)
             {
-                if (SceneManager.GetActiveScene().buildIndex == 0)
+                if (SceneManager.GetActiveScene().buildIndex == 1)
                 {
-                    SceneManager.LoadScene(1);
+                    SceneManager.LoadScene(2);
                 }
                 else
                 {
-                    SceneManager.LoadScene(0);
+                    SceneManager.LoadScene(1);
                 }
             }
 

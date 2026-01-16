@@ -28,19 +28,19 @@ public class woodscript : MonoBehaviour
         int kids=0;
         switch (amount)
         {
-            case > 50:
+            case > 25:
                 kids = 25;
                 break;
-            case > 40:
+            case > 20:
                 kids = 20;
                 break;
-            case > 30:
+            case >15:
                 kids = 15;
                 break;
-            case > 20:
+            case > 10:
                 kids = 10;
                 break;
-            case > 10:
+            case > 5:
                 kids = 5;
                 break;
         }

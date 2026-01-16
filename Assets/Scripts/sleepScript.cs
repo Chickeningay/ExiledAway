@@ -23,7 +23,7 @@ public class sleepScript : MonoBehaviour
             bears.active = true;
             if (Input.GetKeyDown(KeyCode.E))
             {
-                PlayerPrefs.SetInt("foodCount", PlayerPrefs.GetInt("foodCount") - 3);
+                PlayerPrefs.SetInt("FoodAmount", PlayerPrefs.GetInt("FoodAmount") - 3);
                 react = false;
                 fed = true;
             }
@@ -37,13 +37,14 @@ public class sleepScript : MonoBehaviour
         rawImage.color = c;
 
         yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
-
-        if (Random.Range(0, 2) == 1)
+        var temp = PlayerPrefs.GetInt("day");
+        PlayerPrefs.SetInt("day", temp + 1);
+        if (Random.Range(0, 5) == 1)
         {
             transform.GetChild(1).gameObject.active = true;
             react = true;
             yield return new WaitForSeconds(holdDuration * 5);
-            if (!fed&& Random.Range(0,2)==1) { SceneManager.LoadScene(3); }
+            if (!fed&& Random.Range(0,3)==1) { SceneManager.LoadScene(4); }
             react = false;
             transform.GetChild(1).gameObject.active = false;
            
@@ -55,6 +56,7 @@ public class sleepScript : MonoBehaviour
         }
 
         yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
+   
     }
 
     IEnumerator Fade(float startAlpha, float endAlpha, float duration)
@@ -73,7 +75,6 @@ public class sleepScript : MonoBehaviour
 
         c.a = endAlpha;
         rawImage.color = c;
-        var temp = PlayerPrefs.GetInt("day");
-        PlayerPrefs.SetInt("day", temp+1);
+
     }
 }

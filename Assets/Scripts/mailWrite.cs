@@ -9,10 +9,12 @@ public class mailWrite : MonoBehaviour
     public GameObject Player;
     public GameObject AI;
     public Letters lettersDB;
+    public GameObject global;
 
     void Start()
     {
         lettersDB = FindObjectOfType<Letters>();
+        AI = GameObject.Find("AI");
     }
 
     private void Update()
@@ -28,11 +30,25 @@ public class mailWrite : MonoBehaviour
 
             bool replyingToFather = replyDay % 2 == 0;
 
+
+
             string letterId = replyingToFather
                 ? PlayerPrefs.GetString("fatherPath")
                 : PlayerPrefs.GetString("gfPath");
 
+
             var letter = lettersDB.Get(letterId);
+
+            if (letter.isEnding&& replyingToFather)
+            {
+                letterId = PlayerPrefs.GetString("gfPath");
+                letter = lettersDB.Get(letterId);
+            }
+            else if(letter.isEnding && !replyingToFather)
+            {
+                letterId = PlayerPrefs.GetString("fatherPath");
+                letter = lettersDB.Get(letterId);
+            }
             if (letter == null)
             {
                 Debug.LogError("No letter found for ID: " + letterId);

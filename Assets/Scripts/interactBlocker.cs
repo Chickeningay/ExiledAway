@@ -27,8 +27,8 @@ public class interactBlocker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PlayerPrefs.GetInt("WoodAmount") < 0) { SceneManager.LoadScene(2); }
-        if (PlayerPrefs.GetInt("FoodAmount") < 0) { SceneManager.LoadScene(2); }
+        if (PlayerPrefs.GetInt("WoodAmount") < 0) { SceneManager.LoadScene(3); }
+        if (PlayerPrefs.GetInt("FoodAmount") < 0) { SceneManager.LoadScene(3); }
 
         if (fireboxbool) { firebox.transform.parent.GetChild(0).gameObject.active = true; }
         if(eat && fireboxbool)
