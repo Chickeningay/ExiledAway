@@ -58,7 +58,8 @@ If you still love me, show me. Make me believe that you are the guy that I am in
                 prompt =
 @"Decide if the reply proves love through action.
 Return TRUE only if a concrete effort or sacrifice is promised.
-Return FALSE if the response is vague or purely emotional.",
+Return FALSE if the response is vague or purely emotional.
+Be balanced and give at least 50% chance for both, don't be overly critical",
                 nextOnTrue = "g4",
                 nextOnFalse = "g5",
                 isEnding = false

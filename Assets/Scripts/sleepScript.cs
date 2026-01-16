@@ -1,33 +1,59 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class sleepScript : MonoBehaviour
 {
-    public RawImage rawImage;      // Assign in Inspector
-    public float fadeDuration = 2f; // Time to fade in/out
-    public float holdDuration = 2f; // Time to wait at full opacity
-
+    public RawImage rawImage;      
+    public float fadeDuration = 2f; 
+    public float holdDuration = 2f;
+    public bool react;
+    public bool fed;
+    public GameObject bears;
     void Start()
     {
-        
+        fed = false;
         StartCoroutine(FadeInOut());
     }
-
+    private void Update()
+    {
+        if (react)
+        {
+            bears.active = true;
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                PlayerPrefs.SetInt("foodCount", PlayerPrefs.GetInt("foodCount") - 3);
+                react = false;
+                fed = true;
+            }
+        }
+        else { bears.active = false; }
+    }
     IEnumerator FadeInOut()
     {
-        // Start transparent
         Color c = rawImage.color;
         c.a = 0f;
         rawImage.color = c;
 
-        // Fade in
         yield return StartCoroutine(Fade(0f, 1f, fadeDuration));
 
-        // Wait at full opacity
-        yield return new WaitForSeconds(holdDuration);
+        if (Random.Range(0, 2) == 1)
+        {
+            transform.GetChild(1).gameObject.active = true;
+            react = true;
+            yield return new WaitForSeconds(holdDuration * 5);
+            if (!fed&& Random.Range(0,2)==1) { SceneManager.LoadScene(3); }
+            react = false;
+            transform.GetChild(1).gameObject.active = false;
+           
+        }
+        else
+        {
+            yield return new WaitForSeconds(holdDuration);
 
-        // Fade out
+        }
+
         yield return StartCoroutine(Fade(1f, 0f, fadeDuration));
     }
 

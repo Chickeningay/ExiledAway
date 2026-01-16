@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class interactBlocker : MonoBehaviour
 {
@@ -26,8 +27,10 @@ public class interactBlocker : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (PlayerPrefs.GetInt("WoodAmount") < 0) { SceneManager.LoadScene(2); }
+        if (PlayerPrefs.GetInt("FoodAmount") < 0) { SceneManager.LoadScene(2); }
 
-
+        if (fireboxbool) { firebox.transform.parent.GetChild(0).gameObject.active = true; }
         if(eat && fireboxbool)
         {
             writebool = true;

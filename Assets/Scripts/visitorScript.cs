@@ -11,7 +11,7 @@ public class visitorScript : MonoBehaviour
     public bool giveLetter;
     public GameObject AI;
     public Letters lettersDB;
-
+    public bool once;
     bool resolved;
 
     void Start()
@@ -28,8 +28,9 @@ public class visitorScript : MonoBehaviour
 
     void Update()
     {
-        if (giveLetter)
+        if (giveLetter&&!once)
         {
+            once = true;
             GetComponent<Animator>().Play(giveLetterAnim.name);
             letterUI.SetActive(true);
         }
@@ -41,16 +42,34 @@ public class visitorScript : MonoBehaviour
         string currentId = PlayerPrefs.GetString(pathKey);
         var currentLetter = lettersDB.Get(currentId);
         if (currentLetter == null) return;
-
+        
         bool result = AI.GetComponent<AICommunicate>().result;
 
         Letters.Letter nextLetter = currentLetter;
 
         if (!currentLetter.isEnding)
         {
-            string nextId = result
+            string nextId;
+            if (currentId == "g2")
+            {
+                if (PlayerPrefs.GetInt("gaveFood") == 0)
+                {
+                    nextId = currentLetter.nextOnFalse;
+                }
+                else
+                {
+                   nextId = result
+                    ? currentLetter.nextOnTrue
+                    : currentLetter.nextOnFalse;
+                }
+            }
+            else
+            {
+                nextId = result
                 ? currentLetter.nextOnTrue
                 : currentLetter.nextOnFalse;
+
+            }
 
             if (!string.IsNullOrEmpty(nextId))
             {
